@@ -186,6 +186,14 @@ describe 'Basic type mapping' do
 					expect( res.getvalue(0,7) ).to eq( [1.0,2.0,3.0] )
 				end
 			end
+
+			it "should do json type conversions" do
+				[0].each do |format|
+					res = @conn.exec( "SELECT CAST('{\"a\": 1}' AS JSON), CAST('{\"b\": 2}' AS JSONB)", [], format )
+					expect( res.getvalue(0,0) ).to eq( {"a" => 1} )
+					expect( res.getvalue(0,1) ).to eq( {"b" => 2} )
+				end
+			end
 		end
 
 		context "with usage of result oids for copy decoder selection" do

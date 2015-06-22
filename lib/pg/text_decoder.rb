@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'json'
 
 module PG
 	module TextDecoder
@@ -35,6 +36,24 @@ module PG
 				else
 					string
 				end
+			end
+		end
+
+		class Json < SimpleDecoder
+			def decode(string, tuple=nil, field=nil)
+				puts "looking at json: #{string}"
+				JSON.parse string
+			rescue JSON::ParserError
+				string
+			end
+		end
+
+		class Jsonb < SimpleDecoder
+			def decode(string, tuple=nil, field=nil)
+				puts "looking at jsonb: #{string}"
+				JSON.parse string
+			rescue JSON::ParserError
+				string
 			end
 		end
 	end
